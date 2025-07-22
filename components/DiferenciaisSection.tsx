@@ -187,7 +187,7 @@ export default function DiferenciaisSection() {
     onClick={(e) => {
       e.preventDefault();
       window.open(
-        "https://wa.me/5541997027296?text=Ol%C3%A1!%20Tenho%20interesse%20em%20automatizar%20minha%20empresa%20com%20a%20Syncro%20Solutions.%20Podemos%20conversar?",
+        "https://wa.me/5541992017296?text=Ol%C3%A1!%20Tenho%20interesse%20em%20automatizar%20minha%20empresa%20com%20a%20Syncro%20Solutions.%20Podemos%20conversar?",
         "_blank"
       );
     }}
