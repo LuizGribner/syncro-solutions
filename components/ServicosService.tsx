@@ -114,15 +114,17 @@ export default function ServicosPage() {
       >
         Serviços que <span className="text-[#f18a1f] animate-glow">Transformam</span>
       </motion.h1>
-      <motion.p
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.7 }}
-        className="mt-4 max-w-2xl mx-auto text-xl text-[#2e3a48] opacity-90 font-semibold"
-      >
-        Soluções de automação, IA e integrações que resolvem dores reais do mercado brasileiro.<br />
-        Experiência global, execução local.
-      </motion.p>
+      <div className="w-full flex justify-center px-4">
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.7 }}
+          className="mt-4 text-center text-xl text-[#2e3a48] opacity-90 font-semibold max-w-2xl"
+        >
+          Soluções de automação, IA e integrações que resolvem dores reais do mercado brasileiro.<br />
+          Experiência global, execução local.
+        </motion.p>
+      </div>
 
       {/* GRADE DE SERVIÇOS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 mt-20 px-6 w-full max-w-7xl">
