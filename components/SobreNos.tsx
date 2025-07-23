@@ -21,7 +21,7 @@ export default function SobreNos() {
       <div className="w-full flex justify-center mb-10">
         <div className="relative w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-[#eaeaea] border-4 border-[#f18a1f]/30">
           <iframe
-            src="https://www.youtube.com/embed/SEU_VIDEO_ID"
+            src="https://www.youtube.com/embed/Qq03gZ7ky5c"
             title="Vídeo de Apresentação Syncro Solutions"
             className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
