@@ -46,7 +46,7 @@ export default function BlogPostPage({ post }: { post: Post }) {
         <meta property="og:description" content={post.content.slice(0, 160)} />
         <meta property="og:image" content={post.image_url} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://syncrosolutions.com/blog/${post.slug}`} />
+        <meta property="og:url" content={`https://syncrosolutions.com.br/blog/${post.slug}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.content.slice(0, 160)} />
