@@ -1,44 +1,68 @@
-// pages/blog/[slug].tsx
-import { GetServerSideProps } from "next";
-import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Contato from "@/components/Contato";
 import { CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
-import { supabase } from "../../lib/supabaseClient";
+import Head from "next/head"; 
 
 type Post = {
   id: number;
   title: string;
-  content: string;s
+  content: string;
   image_url: string;
   created_at: string;
   author?: string;
   slug?: string;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { slug } = context.params as { slug: string };
+export default function BlogPostPage() {
+  const router = useRouter();
+  const { slug } = router.query;
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const { data: post } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("slug", slug)
-    .single();
+  useEffect(() => {
+    if (!slug) return;
+    supabase
+      .from("posts")
+      .select("*")
+      .eq("slug", slug)
+      .single()
+      .then(({ data }) => {
+        setPost(data);
+        setLoading(false);
+      });
+  }, [slug]);
 
-  if (!post) {
-    return { notFound: true };
+  if (loading) {
+    return (
+      <>
+        <Header onContactClick={() => setModalOpen(true)} />
+        <div className="min-h-screen flex items-center justify-center bg-[#f4f1ea]">
+          <span className="text-2xl font-bold text-[#213041]">Carregando post...</span>
+        </div>
+      </>
+    );
   }
 
-  return {
-    props: { post },
-  };
-};
+  if (!post) {
+    return (
+      <>
+        <Header onContactClick={() => setModalOpen(true)} />
+        <div className="min-h-screen flex items-center justify-center bg-[#f4f1ea]">
+          <span className="text-2xl font-bold text-[#f18a1f]">Post não encontrado :(</span>
+        </div>
+      </>
+    );
+  }
 
-export default function BlogPostPage({ post }: { post: Post }) {
   return (
     <>
+      {/* ✅ METADADOS DINÂMICOS PARA LINKEDIN E OUTRAS PLATAFORMAS */}
       <Head>
         <title>{post.title} | Syncro Solutions</title>
         <meta name="description" content={post.content.slice(0, 160)} />
@@ -53,9 +77,10 @@ export default function BlogPostPage({ post }: { post: Post }) {
         <meta name="twitter:image" content={post.image_url} />
       </Head>
 
-      <Header onContactClick={() => {}} />
+      <Header onContactClick={() => setModalOpen(true)} />
       <section className="min-h-screen bg-[#f4f1ea] py-12 px-3">
         <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#f18a1f]/10">
+          {/* Imagem grande do post */}
           {post.image_url && (
             <div className="w-full h-80 md:h-96 bg-[#f4f1ea] flex items-center justify-center overflow-hidden">
               <motion.img
@@ -94,11 +119,36 @@ export default function BlogPostPage({ post }: { post: Post }) {
             <div className="text-[#213041] text-lg leading-relaxed whitespace-pre-line mb-10">
               {post.content}
             </div>
+
+            {/* CTA ANIMADO */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-2 bg-gradient-to-br from-[#f18a1f]/90 via-[#38bdf8]/80 to-[#213041]/80 rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3"
+            >
+              <h3 className="text-2xl font-extrabold text-white drop-shadow mb-2 text-center">
+                E aí, pronto para automatizar sua empresa{" "}
+                <span className="text-[#ffe58a]">com a Syncro?</span>
+              </h3>
+              <p className="text-white/90 text-center mb-4 max-w-lg">
+                Fale direto comigo! Tira dúvidas, entenda o processo ou peça uma análise gratuita.
+                <br />
+                Bora transformar seu negócio com automação real — sem enrolação.
+              </p>
+              <button
+                onClick={() => setModalOpen(true)}
+                className="bg-white text-[#f18a1f] hover:bg-[#38bdf8] hover:text-white transition font-bold rounded-full px-8 py-3 shadow-lg text-lg"
+              >
+                Quero falar com a Syncro Solutions
+              </button>
+            </motion.div>
+            {/* /CTA */}
           </div>
         </div>
       </section>
-      <Footer onContactClick={() => {}} />
-      <Contato open={false} onClose={() => {}} />
+      <Footer onContactClick={() => setModalOpen(true)} />
+      <Contato open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
 }
