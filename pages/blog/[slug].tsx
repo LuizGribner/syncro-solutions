@@ -1,4 +1,3 @@
-// pages/blog/[slug].tsx
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
@@ -7,6 +6,7 @@ import Footer from "@/components/Footer";
 import Contato from "@/components/Contato";
 import { CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
+import Head from "next/head"; // ✅ IMPORTAÇÃO AQUI
 
 type Post = {
   id: number;
@@ -62,6 +62,21 @@ export default function BlogPostPage() {
 
   return (
     <>
+      {/* ✅ METADADOS DINÂMICOS PARA LINKEDIN E OUTRAS PLATAFORMAS */}
+      <Head>
+        <title>{post.title} | Syncro Solutions</title>
+        <meta name="description" content={post.content.slice(0, 160)} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.content.slice(0, 160)} />
+        <meta property="og:image" content={post.image_url} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://syncrosolutions.com/blog/${post.slug}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.content.slice(0, 160)} />
+        <meta name="twitter:image" content={post.image_url} />
+      </Head>
+
       <Header onContactClick={() => setModalOpen(true)} />
       <section className="min-h-screen bg-[#f4f1ea] py-12 px-3">
         <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#f18a1f]/10">
@@ -105,7 +120,7 @@ export default function BlogPostPage() {
               {post.content}
             </div>
 
-            {/* --- CTA ANIMADO --- */}
+            {/* CTA ANIMADO */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -113,10 +128,12 @@ export default function BlogPostPage() {
               className="mt-2 bg-gradient-to-br from-[#f18a1f]/90 via-[#38bdf8]/80 to-[#213041]/80 rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3"
             >
               <h3 className="text-2xl font-extrabold text-white drop-shadow mb-2 text-center">
-                E aí, pronto para automatizar sua empresa <span className="text-[#ffe58a]">com a Syncro?</span>
+                E aí, pronto para automatizar sua empresa{" "}
+                <span className="text-[#ffe58a]">com a Syncro?</span>
               </h3>
               <p className="text-white/90 text-center mb-4 max-w-lg">
-                Fale direto comigo! Tira dúvidas, entenda o processo ou peça uma análise gratuita.<br />
+                Fale direto comigo! Tira dúvidas, entenda o processo ou peça uma análise gratuita.
+                <br />
                 Bora transformar seu negócio com automação real — sem enrolação.
               </p>
               <button
@@ -126,7 +143,7 @@ export default function BlogPostPage() {
                 Quero falar com a Syncro Solutions
               </button>
             </motion.div>
-            {/* --- /CTA --- */}
+            {/* /CTA */}
           </div>
         </div>
       </section>
